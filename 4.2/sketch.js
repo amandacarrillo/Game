@@ -9,12 +9,13 @@ let player;
 let coins = [];
 let playerImg;
 let coinImg;
+let bg;
 
-function preload(){
- playerImg = loadImage('assets/player.png');
- coinImg = loadImage('assets/coin.png');
+function preload() {
+  playerImg = loadImage('assets/player.png');
+  coinImg = loadImage('assets/coin.png');
+  bg = loadImage('assets/bg.png');
 }
-
 
 function setup() {
   cnv = createCanvas(w, h);
@@ -52,26 +53,35 @@ function keyPressed() {
     player.direction = 'left'
   } else if (keyCode == RIGHT_ARROW) {
     player.direction = 'right'
-  } else if (keyCode == UP_ARROW) {
-    player.direction = 'up'
-  } else if (keyCode == DOWN_ARROW) {
-    player.direction = 'down'
+    // } else if (keyCode == UP_ARROW) {
+    //   player.direction = 'up'
+    // } else if (keyCode == DOWN_ARROW) {
+    //   player.direction = 'down'
   } else if (key = ' ') {
     player.direction = 'still';
+  }
+  function keyReleased(){
+  player.direction = 'still';
   }
 }
 
 function title() {
+
   background(0);
   textSize(80);
   fill(255);
-  textAlign(CENTER);
-  text('MY GAME', w / 2, h / 5);
+  textAlign(CENTER, CENTER);
+  text('MONEY DROP', w / 2, h / 5);
 
-  textSize(30);
-  text('click anywhere to start', w / 2, h / 2);
+  textSize(20);
+  text('USE ← → TO MOVE PLAYER AND ⎵ TO FREEZE ', w / 2, h / 2.5);
+  textSize(25);
+
+  push();
+  text('click anywhere to start', w / 2, h / 1.5);
+  textAlign(CENTER, BOTTOM);
+  pop();
 }
-
 
 function titleMouseClicked() {
   console.log('canvas is clicked on the title page');
@@ -79,7 +89,8 @@ function titleMouseClicked() {
 }
 
 function level1() {
-  background(50, 150, 200);
+  background(bg);
+  imageMode(CORNER);
 
   if (random(1) <= 0.01) {
     coins.push(new Coin());
@@ -88,8 +99,8 @@ function level1() {
   player.display();
   player.move();
 
-  coins[0].display();
-  coins[0].move();
+  //coins[0].display();
+  //coins[0].move();
 
 
   // iterating through coins array to display and move them
@@ -115,6 +126,9 @@ function level1() {
       points++;
       console.log(points);
       coins.splice(i, 1);
+    } else if (coins[i].y > h) {
+coins.splice(i,1);
+console.log('coin is out of town');
     }
   }
 
